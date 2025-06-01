@@ -7,7 +7,7 @@ import scipy.spatial as scispa
 npn = np.newaxis
 normVec = lambda x,r : (r[1]-r[0])*(x-x.min())/(x.max()-x.min()) + r[0]
 
-
+# Helper function
 def mylog(x):
     '''
     @details compute the logarithm avoiding singularities from the data
