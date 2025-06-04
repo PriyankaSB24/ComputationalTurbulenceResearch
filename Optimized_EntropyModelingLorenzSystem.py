@@ -7,12 +7,12 @@ from entropy_and_mutual_information_estimators import entropy,pmf_single_var
 import EntropyParralelProcessing
 
 numConditions = int(1000)     # Number of initial conditions
-timeFinal = 20                # Final Time
-dt = 0.01                    # Length of each time step t{n+1} - t{n}
+timeFinal = 50                # Final Time
+dt = 0.1                    # Length of each time step t{n+1} - t{n}
 timeSteps = int(timeFinal/dt) 
-nth_value_entropy = int(2)   # Get every nth value of entropy
+nth_value_entropy = int(1)   # Get every nth value of entropy
 
-def gaussian_initial_condition_generator_old(numConditions): 
+def gaussian_initial_condition_generator(numConditions): 
     """
     Generates matrix of Gaussian-distributed initial conditions with numTimeSteps columns and numConditions rows
     Creates a `numConditions`-dimensional dataset, with each condition 
@@ -31,7 +31,7 @@ def gaussian_initial_condition_generator_old(numConditions):
     initial_conditions = np.random.multivariate_normal(mean, cov, 3) 
     return initial_conditions.T
 
-def gaussian_initial_condition_generator(numConditions): 
+def gaussian_initial_condition_generator_old(numConditions): 
     """
     Generates `numConditions` initial conditions, each in 3D (x, y, z),
     sampled independently from a standard normal distribution.
@@ -100,9 +100,7 @@ def rossler_system_generator(initial_conditions, dt):
         trajectory_z.append(z) # add to columns
     
     # returns three arrays each are 1 row by timeSteps columns = 1 by timeFinal/dt
-    return np.array(trajectory_x).T, np.array(trajectory_y).T, np.array(trajectory_z).T # columns (x, y, z) and timeFinal/dt rows 
-
-print("Rossler dynamics generated")
+    return np.array(trajectory_x).T, np.array(trajectory_y).T, np.array(trajectory_z).T # columns (x, y, z) and timeFinal/dt rows )
 
 rossler_dynamics_x = []
 rossler_dynamics_y = []

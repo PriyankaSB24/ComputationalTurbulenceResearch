@@ -5,7 +5,7 @@ import random
 from entropy_and_mutual_information_estimators import entropy,pmf_single_var
 
 numConditions = int(1000)     # Number of initial conditions
-timeFinal = 20                # Final Time
+timeFinal = 50                # Final Time
 dt = 0.1                      # Length of each time step t{n+1} - t{n}
 timeSteps = int(timeFinal/dt) 
 
@@ -107,6 +107,69 @@ for i in range(numConditions):
     rossler_dynamics_z.append(z_arr) # num time steps columns and num initial conditions rows
 
 # ------------- Entropy analysis
+rossler_pmf_x = []
+rossler_entropy_x = []
+rossler_pmf_y = []
+rossler_entropy_y = []
+rossler_pmf_z = []
+rossler_entropy_z = []
+
+# Compute entropy at every nth timestep only
+time_array = np.linspace(0, timeFinal, timeSteps)
+
+for i in range(timeSteps):
+    pmf_x = pmf_single_var(np.array(rossler_dynamics_x)[:, i], numConditions // 40, -50, 50)
+    rossler_pmf_x.append(pmf_x)
+    rossler_entropy_x.append(entropy(pmf_x))
+
+    pmf_y = pmf_single_var(np.array(rossler_dynamics_y)[:, i], numConditions // 40, -50, 50)
+    rossler_pmf_y.append(pmf_y)
+    rossler_entropy_y.append(entropy(pmf_y))
+
+    pmf_z = pmf_single_var(np.array(rossler_dynamics_z)[:, i], numConditions // 40, -50, 50)
+    rossler_pmf_z.append(pmf_z)
+    rossler_entropy_z.append(entropy(pmf_z))
+
+print("PMFs and entropies for Rössler full system calculated (serial)")
+
+textToDisplay = f"Number of initial conditions: {numConditions}   Time: {timeFinal}   dt: {dt}    Every {1}th entropy value computed"
+
+# --- Plot Z ---
+plt.figure(figsize=(8, 5))
+plt.plot(time_array, rossler_entropy_z, color='blue', linewidth=1.5)
+plt.xlabel('Time')
+plt.ylabel('Entropy (Z)')
+plt.title('Rössler System Entropy (Z) vs Time\n' + textToDisplay)
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# --- Plot Y ---
+plt.figure(figsize=(8, 5))
+plt.plot(time_array, rossler_entropy_y, color='green', linewidth=1.5)
+plt.xlabel('Time')
+plt.ylabel('Entropy (Y)')
+plt.title('Rössler System Entropy (Y) vs Time\n' + textToDisplay)
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# --- Plot X ---
+plt.figure(figsize=(8, 5))
+plt.plot(time_array, rossler_entropy_x, color='red', linewidth=1.5)
+plt.xlabel('Time')
+plt.ylabel('Entropy (X)')
+plt.title('Rössler System Entropy (X) vs Time\n' + textToDisplay)
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+"""
+# Previous Entropy Analysis 
 # get pmf of each column which is at the same time step you sum you the initial condition x, y, and z separately
 rossler_pmf_x = []
 rossler_entropy_x = []
@@ -118,7 +181,7 @@ rossler_entropy_z = []
 for i in range(timeSteps):  # iter # iterate through each columns which is number of time steps columns
     rossler_pmf_x.append(pmf_single_var(np.array(rossler_dynamics_x)[:,i],numConditions//40,-50,50)) # 100 bins ??
     rossler_entropy_x.append(entropy(np.array(rossler_pmf_x))) # recalcuates entropy for entire pmf function
-    
+
     rossler_pmf_y.append(pmf_single_var(np.array(rossler_dynamics_y)[:,i],numConditions//40,-50,50)) # 100 bins ??
     rossler_entropy_y.append(entropy(np.array(rossler_pmf_y)))
     
@@ -159,3 +222,4 @@ plt.title('Rössler System Entropy (X) vs Time\n' + textToDisplay)
 plt.grid(True)
 plt.tight_layout()
 plt.show()
+"""
